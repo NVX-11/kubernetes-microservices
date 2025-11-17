@@ -1,0 +1,72 @@
+replicaCount:
+  frontend: 2
+  backend: 2
+
+image:
+  repository: YOUR_ECR_REPO
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+frontend:
+  port: 80
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+
+backend:
+  port: 3000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  database:
+    host: postgres-service
+    port: 5432
+    name: microservices
+    user: postgres
+    password: postgres
+
+postgres:
+  enabled: true
+  storage: 5Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  hosts:
+    - paths:
+        - path: /
+          pathType: Prefix
+          service: frontend-service
+        - path: /api
+          pathType: Prefix
+          service: backend-service
