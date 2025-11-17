@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: YOUR_ECR_REPO/frontend:latest
+        image: 058264316795.dkr.ecr.us-east-1.amazonaws.com/microservices/frontend:latest
         ports:
         - containerPort: 80
         resources:

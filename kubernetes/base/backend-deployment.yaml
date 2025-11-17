@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: YOUR_ECR_REPO/backend:latest
+        image: 058264316795.dkr.ecr.us-east-1.amazonaws.com/microservices/backend:latest
         ports:
         - containerPort: 3000
         env:

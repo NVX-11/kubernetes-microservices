@@ -3,7 +3,7 @@ replicaCount:
   backend: 2
 
 image:
-  repository: YOUR_ECR_REPO
+  repository: 058264316795.dkr.ecr.us-east-1.amazonaws.com/microservices
   pullPolicy: IfNotPresent
   tag: "latest"
 
