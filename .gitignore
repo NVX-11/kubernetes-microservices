@@ -1,0 +1,15 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+terraform.tfvars
+*.pem
+*.key
+kubeconfig
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+.env
+.vscode/
+.idea/
