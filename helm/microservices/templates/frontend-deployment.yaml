@@ -24,13 +24,13 @@ spec:
           {{- toYaml .Values.frontend.resources | nindent 10 }}
         livenessProbe:
           httpGet:
-            path: /
+            path: /health
             port: {{ .Values.frontend.port }}
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /
+            path: /health
             port: {{ .Values.frontend.port }}
           initialDelaySeconds: 5
           periodSeconds: 5

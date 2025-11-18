@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/NVX-11/kubernetes-microservices
-    targetRevision: main
+    targetRevision: master
     path: kubernetes/base
   destination:
     server: https://kubernetes.default.svc
