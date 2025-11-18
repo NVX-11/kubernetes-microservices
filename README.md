@@ -93,21 +93,7 @@ I built this to show hands-on experience with enterprise Kubernetes deployments.
 - **Terraform** - All infrastructure defined as code, repeatable deployments
 - **Helm** - Package management for Kubernetes applications
 - **ArgoCD** - GitOps continuous delivery (declarative deployments)
-
-## Cost Breakdown
-
-This setup was designed to be portfolio-friendly while still being production-ready. Here's what you're looking at monthly:
-
-| Resource | Cost |
-|----------|------|
-| EKS Control Plane | $73.00 |
-| 2x t3.small SPOT Instances | ~$6.00 |
-| NAT Gateway | $32.00 |
-| Elastic IP | $0.00 |
-| EBS Volumes (20GB each) | ~$4.00 |
-| **Total Estimate** | **~$115/month** |
-
-Compare this to a traditional On-Demand setup with 3 AZs and 3 NAT gateways: you'd be paying $200+/month easily.
+  
 
 ## Prerequisites
 
@@ -285,86 +271,16 @@ Once Grafana is running, check out these dashboards:
 - **Kubernetes / Compute Resources / Namespace (Pods)** - Per-namespace metrics
 - **Kubernetes / Networking / Pod** - Network traffic and bandwidth
 
-You can also query Prometheus directly:
-```bash
-kubectl port-forward -n monitoring svc/kube-prometheus-stack-prometheus 9090:9090
-# Open http://localhost:9090
-```
-
-Try these queries:
-- `kube_pod_status_phase` - See pod states
-- `container_cpu_usage_seconds_total` - CPU usage
-- `container_memory_usage_bytes` - Memory consumption
-
-## Troubleshooting
-
-**Pods stuck in Pending?**
-```bash
-kubectl describe pod <pod-name>
-```
-Usually it's resource constraints or image pull issues.
-
-**Can't access services?**
-Make sure port-forward is running and check if pods are actually ready:
-```bash
-kubectl get pods
-kubectl logs <pod-name>
-```
-
-**Terraform errors?**
-Most common issue is AWS credentials or region mismatch. Check:
-```bash
-aws sts get-caller-identity
-```
-
-**High costs?**
-If you're not using the cluster, destroy it:
-```bash
-terraform destroy
-```
-The EKS control plane alone is $73/month just sitting idle.
-
-## Cleaning Up
-
-When you're done testing, tear everything down to avoid charges:
-
-```bash
-# Delete Kubernetes resources first
-kubectl delete -f kubernetes/base/
-
-# Remove monitoring stack
-helm uninstall kube-prometheus-stack -n monitoring
-
-# Destroy infrastructure
-cd terraform
-terraform destroy -auto-approve
-```
-
-This removes everything and stops all billing.
 
 ## What I Learned
 
-Building this taught me a ton about:
+Building this taught me about:
 - How EKS actually works under the hood (not just theory)
 - Real-world cost optimization (SPOT instances, shared NAT gateways)
 - Terraform modules and state management
 - Kubernetes networking and service discovery
 - Monitoring and observability at scale
 - Container security and image optimization
-
-## Future Improvements
-
-If I were to expand this:
-- Add Cert-Manager for automatic SSL certificates
-- Implement service mesh (Istio or Linkerd) for advanced traffic management
-- Set up proper CI/CD pipeline with GitHub Actions
-- Add distributed tracing with Jaeger
-- Implement centralized logging with ELK stack
-- Create disaster recovery and backup strategy
-
-## License
-
-MIT License - feel free to use this for your own learning or portfolio.
 
 ---
 
